@@ -1,4 +1,4 @@
-# Spectacle Boilerplate
+# LD Slider
 
 ## Contents
 
@@ -8,7 +8,7 @@
 
 ## Reference
 
-The Spectacle core API is available at [https://github.com/FormidableLabs/spectacle/blob/master/README.md](https://github.com/FormidableLabs/spectacle/blob/master/README.md).
+Basado en Spectacle Boilerplate, adaptado con backend basado en feathers
 
 ## Getting Started
 

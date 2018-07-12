@@ -1,0 +1,10 @@
+{
+  "host": "192.168.0.4",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "mongodb": "mongodb://jotaxe:test123@ds125831.mlab.com:25831/ld_slider"
+}
