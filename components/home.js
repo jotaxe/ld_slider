@@ -17,7 +17,7 @@ export default class Home extends Component {
   componentWillMount() {
    
     var req = new XMLHttpRequest();
-    req.open('GET', 'http://192.168.0.3:3030/working-sites/', null);
+    req.open('GET', 'http://167.99.202.59:3030/working-sites/', null);
     req.send(null);
     const reqJSON = JSON.parse(req.responseText);
     this.setState({ws: reqJSON.data});
