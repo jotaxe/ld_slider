@@ -16,6 +16,8 @@ import {
   Text
 } from "spectacle";
 
+import "./deck.css"
+
 import createTheme from "spectacle/lib/themes/default";
 
 import PDFView from "./pdf";
@@ -60,7 +62,7 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck contentHeight={60} transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} >
+        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} >
         	{sli}
         </Deck>
     )
