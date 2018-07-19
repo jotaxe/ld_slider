@@ -40,7 +40,7 @@ export default function Pres({slides}){
     console.log(window.location.pathname)
 		return slide.children ? (
 			
-			<Slide {...sProps} key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, sProps.time*1000);} } >
+			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, sProps.time*1000);} } >
 				{
 					slide.children.map( (element) =>{
 						switch(element.type){
@@ -60,7 +60,7 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} >
+        <Deck contentHeight={60} transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} >
         	{sli}
         </Deck>
     )
