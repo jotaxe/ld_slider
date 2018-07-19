@@ -48,7 +48,7 @@ export default class Home extends Component {
     return (
       <div>
           <Container text style={{marginTop: '100px'}}>
-            <Grid>  
+            <Grid columns={3} textAling={"centered"} verticalAling={"middle"}> 
               {visible ? wsLinks: null}
             </Grid>
           </Container>
