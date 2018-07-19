@@ -18,6 +18,7 @@ import {
 
 import createTheme from "spectacle/lib/themes/default";
 
+import PDFView from "./pdf";
 
 
 const theme = createTheme({
@@ -25,30 +26,33 @@ const theme = createTheme({
   secondary: "#1F2022",
   tertiary: "#03A9FC",
   quarternary: "#CECECE"
-}, {
-  primary: "Montserrat",
-  secondary: "Helvetica"
 });
 
+var time = 5000;
+
 export default function Pres({slides}){
+  const size = slides.length - 1;
 	const sli = slides.map( (slide) => {
 		const sProps = slide.props;
-		const bgColor = sProps.style ? sProps.style.backgroundColor : "white"; 
-		const bgImage = sProps.backgroundImage ? sProps.backgroundImage : null;
-		const transition = sProps.transition ? sProps.transition : ["slide"]; 
-		console.log("Slide " + slide.id + ":",sProps)
+		const bgColor = sProps.style ? sProps.style.backgroundColor : "white";
+		const bgImage = sProps.style ? sProps.style.backgroundImage : null;
+    const transition = sProps.transition ? sProps.transition : ["slide"];
+    console.log(window.location.pathname)
 		return slide.children ? (
 			
-			<Slide key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage}>
+			<Slide {...sProps} key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, sProps.time*1000);} } >
 				{
 					slide.children.map( (element) =>{
 						switch(element.type){
                       		case "Text":
-                        		return <Heading {...element.props}> {element.children} </Heading> 
+                            console.log(element)
+                        		return <Heading {...element.props}> {element.children || element.defaultText[0]} </Heading>
                       		case "Video":
                         		return <iframe {...element.props}/>
                       		case "Image":
                         		return <Image {...element.props} />
+                          case "PDF":
+                            return <PDFView {...element.props}/>
                     	}
                 	})
                 }
@@ -56,7 +60,7 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck transition={["slide"]} transitionDuration={500} controls={false} autoplay={false} autoplayDuration={3000} theme={theme}>
+        <Deck transition={["slide"]} transitionDuration={500} controls={true} theme={theme} contentHeigth={720} contentWidth={1280}>
         	{sli}
         </Deck>
     )

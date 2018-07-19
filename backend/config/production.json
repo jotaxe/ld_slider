@@ -1,4 +1,6 @@
 {
-  "host": "backend-app.feathersjs.com",
-  "port": "PORT"
+  "host": "167.99.202.59",
+  "port": "3030"
+},
+"mongodb": "mongodb://167.99.202.59:27017/ld_slider"
 }

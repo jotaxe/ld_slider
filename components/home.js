@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
-
 import '../App.css';
 import { Link, Route, Switch } from 'react-router-dom';
+import WorkingSiteView from "./working-sites";
 import PresentationView from "./presentations";
 import {Button, List, Icon, Grid, Container} from "semantic-ui-react";
 
-export default class WorkingSiteView extends Component {
+export default class Home extends Component {
   constructor(props){
     super(props)
     this.state = {
-      pres: [],
-      visible: true,
-      path: undefined
+      ws: [],
+      visible: true
     }
   }
 
   componentWillMount() {
-
-    const {match: {params, path} } = this.props;
-    console.log(this.props.match)
-    const vis = path !== "pres-:_id";
    
     var req = new XMLHttpRequest();
-    req.open('GET', 'http://167.99.202.59:3030/presentations/?belongs_to=' + params._id, null);
+    req.open('GET', 'http://192.168.0.3:3030/working-sites/', null);
     req.send(null);
     const reqJSON = JSON.parse(req.responseText);
-    this.setState({pres: reqJSON.data, visible: vis});
+    this.setState({ws: reqJSON.data});
   }
 
   componentWillUnmount(){
@@ -35,27 +30,29 @@ export default class WorkingSiteView extends Component {
     this.setState({visible: false})    
   }
   render(){
-    const {pres, visible} = this.state
-    const presLinks = pres.map( (presentation) => {
+    const {ws, visible} = this.state
+    console.log(ws)
+    const wsLinks = ws ? ws.map( (workingSite) => {
       return (
         <Grid.Column>
-        <List.Item key = {presentation._id}>
-          <Link to = {"/pres-" + presentation._id}>
+        <List.Item key = {workingSite._id}>
+          <Link to = {"/ws-" + workingSite._id}>
             <Button size="massive" color="blue" circular icon='file powerpoint' onClick={this.changeVisible}>
             </Button>
           </Link>
-          <List.Header>{presentation.name}</List.Header>
+          <List.Header>{workingSite.name}</List.Header>
         </List.Item>
         </Grid.Column>
       )
-    });
+    }) : (<h1>Holi</h1>);
     return (
       <div>
-        <Container text style={{marginTop: '100px'}}>
-          <Grid columns={3} textAling={"centered"} verticalAling={"middle"}>
-            {visible ? presLinks: null}
-          </Grid>
-        </Container>
+          <Container text style={{marginTop: '100px'}}>
+            <Grid>  
+              {visible ? wsLinks: null}
+            </Grid>
+          </Container>
+      
       </div>
     )
 

@@ -19,7 +19,7 @@
     "normalize.css": "7.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-pdf-js": "^3.0.7",
+    "react-pdf": "^3.0.5",
     "react-router-dom": "^4.3.1",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.0",

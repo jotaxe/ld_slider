@@ -15,6 +15,7 @@ import {
   Image,
   Text
 } from "spectacle";
+import {Button, Icon, Grid, Container} from "semantic-ui-react";
 
 
 
@@ -42,7 +43,7 @@ export default class Presentation extends React.Component {
   componentWillMount(){
     const {match: {params} } = this.props;
     var req = new XMLHttpRequest();
-    req.open('GET', 'http://192.168.0.4:3030/presentations/' + params._id, null);
+    req.open('GET', 'http://167.99.202.59:3030/presentations/' + params._id, null);
     req.send(null);
     const reqJSON = JSON.parse(req.responseText);
     this.setState({slides: reqJSON.presentation_file.slides})

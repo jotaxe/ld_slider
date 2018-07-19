@@ -1,5 +1,5 @@
 {
-  "host": "192.168.0.4",
+  "host": "167.99.202.59",
   "port": 3030,
   "public": "../public/",
   "paginate": {
