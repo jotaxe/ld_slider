@@ -60,7 +60,7 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} contentHeigth={720} contentWidth={1280}>
+        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} contentHeigth={700} contentWidth={1280}>
         	{sli}
         </Deck>
     )
