@@ -46,7 +46,6 @@ export default function Pres({slides}){
 					slide.children.map( (element) =>{
 						switch(element.type){
                       		case "Text":
-                            console.log(element)
                         		return <Heading {...element.props}> {element.children || element.defaultText[0]} </Heading>
                       		case "Video":
                         		return <iframe {...element.props}/>

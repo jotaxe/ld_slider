@@ -9,8 +9,7 @@ export default class Home extends Component {
   constructor(props){
     super(props)
     this.state = {
-      ws: [],
-      visible: true
+      ws: []
     }
   }
 
@@ -23,12 +22,6 @@ export default class Home extends Component {
     this.setState({ws: reqJSON.data});
   }
 
-  componentWillUnmount(){
-    this.setState({visible: false})
-  }
-  changeVisible = () => {
-    this.setState({visible: false})    
-  }
   render(){
     const {ws, visible} = this.state
     const wsLinks = ws ? ws.map( (workingSite) => {
@@ -48,7 +41,7 @@ export default class Home extends Component {
       <div>
           <Container text style={{marginTop: '100px'}}>
             <Grid columns={3} textAling={"centered"} verticalAling={"middle"}> 
-              {visible ? wsLinks: null}
+              {wsLinks || null}
             </Grid>
           </Container>
       
