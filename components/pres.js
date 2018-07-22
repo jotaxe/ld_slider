@@ -39,7 +39,6 @@ export default function Pres({slides}){
 		const bgColor = sProps.style ? sProps.style.backgroundColor : "white";
 		const bgImage = sProps.style ? sProps.style.backgroundImage : null;
     const transition = sProps.transition ? sProps.transition : ["slide"];
-    console.log(window.location.pathname)
 		return slide.children ? (
 			
 			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, sProps.time*1000);} } >

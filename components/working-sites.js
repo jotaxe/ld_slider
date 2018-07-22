@@ -9,39 +9,29 @@ export default class WorkingSiteView extends Component {
   constructor(props){
     super(props)
     this.state = {
-      pres: [],
-      visible: true,
-      path: undefined
+      pres: []
     }
   }
 
   componentWillMount() {
 
-    const {match: {params, path} } = this.props;
-    console.log(this.props.match)
-    const vis = path !== "pres-:_id";
-   
+    const {match: {params} } = this.props;
     var req = new XMLHttpRequest();
     req.open('GET', 'http://167.99.202.59:3030/presentations/?belongs_to=' + params._id, null);
     req.send(null);
     const reqJSON = JSON.parse(req.responseText);
-    this.setState({pres: reqJSON.data, visible: vis});
+    this.setState({pres: reqJSON.data});
   }
 
-  componentWillUnmount(){
-    this.setState({visible: false})
-  }
-  changeVisible = () => {
-    this.setState({visible: false})    
-  }
+
   render(){
-    const {pres, visible} = this.state
+    const {pres} = this.state
     const presLinks = pres.map( (presentation) => {
       return (
         <Grid.Column>
         <List.Item key = {presentation._id}>
           <Link to = {"/pres-" + presentation._id}>
-            <Button size="massive" color="blue" circular icon='file powerpoint' onClick={this.changeVisible}>
+            <Button size="massive" color="blue" circular icon='file powerpoint'>
             </Button>
           </Link>
           <List.Header>{presentation.name}</List.Header>
@@ -53,7 +43,7 @@ export default class WorkingSiteView extends Component {
       <div>
         <Container text style={{marginTop: '100px'}}>
           <Grid columns={3} textAling={"centered"} verticalAling={"middle"}>
-            {visible ? presLinks: null}
+            {presLinks || null}
           </Grid>
         </Container>
       </div>

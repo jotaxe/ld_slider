@@ -47,7 +47,6 @@ export default class Presentation extends React.Component {
     req.send(null);
     const reqJSON = JSON.parse(req.responseText);
     this.setState({slides: reqJSON.presentation_file.slides})
-    console.log(reqJSON)
     
   }
 

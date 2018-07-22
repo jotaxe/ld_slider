@@ -31,7 +31,6 @@ export default class Home extends Component {
   }
   render(){
     const {ws, visible} = this.state
-    console.log(ws)
     const wsLinks = ws ? ws.map( (workingSite) => {
       return (
         <Grid.Column>
