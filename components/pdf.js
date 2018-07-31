@@ -22,8 +22,8 @@ export default class PDFView extends Component {
   onPageLoadSuccess = ({pageNumber}) => {
 
     const {numPages, play, time} = this.state;
-    const timeout = time > 6000 ? time : 6000;
-    setTimeout( () => {this.setState({pageNumber: ((pageNumber) < numPages) && play  ? pageNumber + 1 : 1 })}, timeout);
+    const timeout = time > 6 ? time : 6;
+    setTimeout( () => {this.setState({pageNumber: ((pageNumber) < numPages) && play  ? pageNumber + 1 : 1 })}, timeout*1000);
   }
 
 
