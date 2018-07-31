@@ -21,6 +21,9 @@ import "./deck.css"
 import createTheme from "spectacle/lib/themes/default";
 
 import PDFView from "./pdf";
+import ChartView from "./chart";
+
+
 
 
 const theme = createTheme({
@@ -42,7 +45,11 @@ export default function Pres({slides}){
 		return slide.children ? (
 			
 			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, sProps.time*1000);} } >
-				{
+				<div className={"home-wrapper"} style={{height: 30, width: 30}}>
+          <a className={"home-button"} href="/">Inicio</a>
+
+        </div>
+        {
 					slide.children.map( (element) =>{
 						switch(element.type){
                       		case "Text":
@@ -53,6 +60,9 @@ export default function Pres({slides}){
                         		return <Image {...element.props} />
                           case "PDF":
                             return <PDFView {...element.props}/>
+                          case "WENUWORK":
+                            return <ChartView {...element.props} />
+
                     	}
                 	})
                 }
@@ -60,8 +70,9 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} >
-        	{sli}
+        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} contentHeight={720} contentWidth={1280}>
+        	
+          {sli}
         </Deck>
     )
 }

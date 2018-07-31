@@ -32,7 +32,7 @@ export default class PDFView extends Component {
     return (
       <div style={this.props.style}>
         <Document
-          file = {this.props.file}
+          file = {"http://cors-anywhere.herokuapp.com/" + this.props.file}
           onLoadSuccess = {this.onDocumentLoadSuccess}
         >
           <Page

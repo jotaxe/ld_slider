@@ -3,7 +3,13 @@ import React, { Component } from 'react';
 import '../App.css';
 import { Link, Route, Switch } from 'react-router-dom';
 import PresentationView from "./presentations";
-import {Button, List, Icon, Grid, Container} from "semantic-ui-react";
+import {Button, List, Icon, Grid, Container, Card, Header} from "semantic-ui-react";
+import {domain, port, fetchPresFromWs} from "./api";
+
+function formatDate(str){
+  const date = new Date(str)
+  return "" + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear()
+}
 
 export default class WorkingSiteView extends Component {
   constructor(props){
@@ -16,10 +22,7 @@ export default class WorkingSiteView extends Component {
   componentWillMount() {
 
     const {match: {params} } = this.props;
-    var req = new XMLHttpRequest();
-    req.open('GET', 'http://167.99.202.59:3030/presentations/?belongs_to=' + params._id, null);
-    req.send(null);
-    const reqJSON = JSON.parse(req.responseText);
+    const reqJSON = fetchPresFromWs(domain, port, params)
     this.setState({pres: reqJSON.data});
   }
 
@@ -29,19 +32,31 @@ export default class WorkingSiteView extends Component {
     const presLinks = pres.map( (presentation) => {
       return (
         <Grid.Column>
-        <List.Item key = {presentation._id}>
-          <Link to = {"/pres-" + presentation._id}>
-            <Button size="massive" color="blue" circular icon='file powerpoint'>
-            </Button>
-          </Link>
-          <List.Header>{presentation.name}</List.Header>
-        </List.Item>
+          
+          <Card key={presentation._id}>
+            <Card.Content>
+              <Card.Header>{presentation.name}</Card.Header>
+              <Card.Meta>Tamaño ({parseInt(JSON.stringify(presentation.presentation_file).length / 1000)} KB)</Card.Meta>
+              <Card.Description>Fecha {formatDate(presentation.createdAt)}</Card.Description>
+            </Card.Content>
+            <Card.Content extra>
+              <div>
+                <Link to = {"/pres-" + presentation._id}>
+                  <Button basic color="green">
+                    Reproducir
+                  </Button>
+                </Link>
+              </div>
+            </Card.Content>
+          </Card>
+
         </Grid.Column>
       )
     });
     return (
       <div>
         <Container text style={{marginTop: '100px'}}>
+          <Header as={"h1"} textAling={"centered"}> Presentaciones </Header>
           <Grid columns={3} textAling={"centered"} verticalAling={"middle"}>
             {presLinks || null}
           </Grid>
