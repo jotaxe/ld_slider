@@ -5,6 +5,7 @@ import WorkingSiteView from "./working-sites";
 import PresentationView from "./presentations";
 import {Button, Grid, Container, Card, Header} from "semantic-ui-react";
 import {domain, port, fetchAllWs} from "./api";
+import {getAccesToken} from "../components/wenuwork"
 
 export default class Home extends Component {
   constructor(props){
@@ -15,7 +16,11 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-   
+    const accessToken = localStorage.getItem("access_token");
+    const refreshToken = localStorage.getItem("refresh_token");
+    const accessReq = {accessToken, refreshToken} ? {accessToken, refreshToken} :  getAccesToken();
+    localStorage.setItem("access_token", accessReq.accessToken)
+    localStorage.setItem("refresh_token", accessReq.refreshToken)
     const reqJSON = fetchAllWs(domain, port);
     this.setState({ws: reqJSON.data});
   }

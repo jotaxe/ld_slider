@@ -10,6 +10,12 @@ const configuration = require('@feathersjs/configuration');
 const express = require('@feathersjs/express');
 const socketio = require('@feathersjs/socketio');
 
+const blobService = require('feathers-blob');
+const fs = require('fs-blob-store');
+const blobStorage = fs(__dirname + '/pdf');
+
+const multer = require('multer');
+const multipartMiddleware = multer();
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -20,18 +26,33 @@ const mongoose = require('./mongoose');
 
 const app = express(feathers());
 
+const bodyParser = require("body-parser");
 // Load app configuration
 app.configure(configuration());
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());
 app.use(compress());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '25mb'}));
+app.use(bodyParser.urlencoded({limit: '25mb', extended: true}));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
 
+app.use('/pdf', 
+
+// multer parses the file named 'uri'.
+// Without extra params the data is
+// temporarely kept in memory
+multipartMiddleware.single('uri'),
+
+// another middleware, this time to
+// transfer the received file to feathers
+function(req,res,next){
+    req.feathers.file = req.file;
+    next();
+},
+blobService({Model: blobStorage}));
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());

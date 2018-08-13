@@ -22,7 +22,7 @@ export default class PDFView extends Component {
   onPageLoadSuccess = ({pageNumber}) => {
 
     const {numPages, play, time} = this.state;
-    const timeout = time > 6 ? time : 6;
+    const timeout = time > 0 ? time : 6;
     setTimeout( () => {this.setState({pageNumber: ((pageNumber) < numPages) && play  ? pageNumber + 1 : 1 })}, timeout*1000);
   }
 
@@ -32,7 +32,7 @@ export default class PDFView extends Component {
     return (
       <div style={this.props.style}>
         <Document
-          file = {"http://cors-anywhere.herokuapp.com/" + this.props.file}
+          file =  {this.props.file}
           onLoadSuccess = {this.onDocumentLoadSuccess}
         >
           <Page

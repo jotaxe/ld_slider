@@ -35,8 +35,7 @@ export default class Presentation extends React.Component {
     constructor(props) {
       super(props)
       this.state ={
-        slides:  Array(4).fill(<Slide key="loading" />),
-        
+        slides:  Array(4).fill(<Slide key={new Date()} />)    
     }
   }
 

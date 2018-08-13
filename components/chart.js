@@ -16,10 +16,11 @@ export default class ChartView extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			comparePeriod: "daily",
+			comparePeriod: "monthly",
 			sensors: this.props.sensor,
 			currentSensorsData: undefined,
 			barColor: this.props.barColor,
+			dataKey: this.props.dataKey,
 			accessToken: undefined,
 			refreshToken: undefined
 		}
@@ -36,7 +37,7 @@ export default class ChartView extends Component{
 
 
 	shouldComponentUpdate(nextProps){
-		const {currentSensorsData, shouldRefresh} = this.state;
+		const {currentSensorsData} = this.state;
 		return (this.props.sensors != nextProps.sensors) || (currentSensorsData === undefined);
 	}
 
@@ -61,7 +62,7 @@ export default class ChartView extends Component{
 			this.setState({accessToken: acTk, refreshToken: rfsTk});
 			this.props.sensors.forEach( (sensor) => {
 				
-				const newStats = getMeterStats("66801", comparePeriod, acTk);
+				const newStats = getMeterStats(sensor, comparePeriod, acTk);
 	
 				if (lastWeekDay > thisWeekDay) {
 						
@@ -159,13 +160,13 @@ export default class ChartView extends Component{
 	}
 
 	render(){
-		const {currentSensorsData, barColor} = this.state;
+		const {currentSensorsData, barColor, dataKey} = this.state;
 		return (
 			<div style={this.props.style}>
 				<BarChart width={this.props.style.width || 450} height={this.props.style.width || 400} data={currentSensorsData || defaultData}>
          			<XAxis dataKey='name'/>
          			<YAxis/>
-         			<Bar dataKey='energy' fill='#8884d8'/>
+         			<Bar dataKey={dataKey} fill={barColor}/>
        			</BarChart>
        		</div>
 		)

@@ -36,7 +36,6 @@ const theme = createTheme({
 var time = 5000;
 
 export default function Pres({slides}){
-  var timer;
   const size = slides.length - 1;
 	const sli = slides.map( (slide) => {
 		const sProps = slide.props;
@@ -45,7 +44,7 @@ export default function Pres({slides}){
     const transition = sProps.transition ? sProps.transition : ["slide"];
 		return slide.children ? (
 			
-			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => {clearTimeout(timer); timer = setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, (sProps.time > 0 ? sProps.time*1000 : 5000));} } >
+			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => { setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, (sProps.time > 0 ? sProps.time*1000 : 5000)); } } >
 				<div className={"home-wrapper"} style={{height: 30, width: 30}}>
           <a className={"home-button"} href="/">Inicio</a>
 
@@ -53,20 +52,20 @@ export default function Pres({slides}){
         {
 					slide.children.map( (element) =>{
 						switch(element.type){
-                      		case "Text":
-                        		return <Heading {...element.props}> {element.children || element.defaultText[0]} </Heading>
-                      		case "Video":
-                        		return <iframe {...element.props}/>
-                      		case "Image":
-                        		return <Image {...element.props} />
-                          case "PDF":
-                            return <PDFView {...element.props}/>
-                          case "WENUWORK":
-                            return <ChartView {...element.props} />
-
-                    	}
-                	})
-                }
+              case "Text":
+              	return <Heading {...element.props}> {element.children || element.defaultText[0]} </Heading>
+              case "Video":
+              	return <iframe {...element.props}/>
+              case "Image":
+              	return <Image {...element.props} />
+              case "PDF":
+                return <PDFView {...element.props}/>
+              case "WENUWORK":
+                return <ChartView {...element.props} />
+            }
+          })
+        }
+        
 			</Slide>
 		) : (<Slide />)
 	} );

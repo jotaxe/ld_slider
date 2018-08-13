@@ -3,14 +3,17 @@
 var path = require("path");
 var express = require("express");
 var webpack = require("webpack");
-var config = require("./webpack.config");
+var config = process.env.NODE_ENV === "production" ? require("./webpack.config.production") : require("./webpack.config");
 var cors = require("cors");
+
 
 var app = express();
 app.use(cors());
 var compiler = webpack(config);
 
 var serverPort = process.env.PORT || 3001;
+var serverHost = process.env.NODE_ENV === "production" ? "167.99.202.59" : "192.168.0.11"
+
 
 
 
@@ -25,11 +28,11 @@ app.get("*", function(req, res) {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.listen(serverPort, "192.168.0.11", function (err) {
+app.listen(serverPort, serverHost, function (err) {
   if (err) {
     console.log(err);
     return;
   }
 
-  console.log("Listening at http://localhost:" + serverPort);
+  console.log("Listening at http://"+ serverHost + ":" + serverPort);
 });
