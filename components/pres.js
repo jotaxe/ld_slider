@@ -53,15 +53,15 @@ export default function Pres({slides}){
 					slide.children.map( (element) =>{
 						switch(element.type){
               case "Text":
-              	return <Heading textFont = {element.props.style.fontFamily} {...element.props}> {element.children || element.defaultText[0]} </Heading>
+              	return <Heading key={new Date()} textFont = {element.props.style.fontFamily} {...element.props}> {element.children || element.defaultText[0]} </Heading>
               case "Video":
-              	return <iframe {...element.props}/>
+              	return <iframe key={new Date()} {...element.props}/>
               case "Image":
-              	return <Image {...element.props} />
+              	return <Image key={new Date()} {...element.props} />
               case "PDF":
-                return <PDFView {...element.props}/>
+                return <PDFView key={new Date()} {...element.props}/>
               case "WENUWORK":
-                return <ChartView {...element.props} />
+                return <ChartView key={new Date()} {...element.props} />
             }
           })
         }
