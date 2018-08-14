@@ -36,7 +36,7 @@ export function getAccesToken(){
 	});
 	
 	var xhr = new XMLHttpRequest();
-	xhr.withCredentials = true;
+	
 	
 	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", null);
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -58,7 +58,7 @@ export function getRefreshToken(rToken){
 	});
 	
 	var xhr = new XMLHttpRequest();
-	xhr.withCredentials = true;
+	
 
 	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", null);
 	xhr.setRequestHeader("Content-Type", "application/json");
@@ -92,7 +92,7 @@ export function getMeterStats(meter, period, aToken){
 	var data = null;
 
 	var xhr = new XMLHttpRequest();
-	xhr.withCredentials = true;
+	
 	xhr.onreadystatechange = function () {
 		if(xhr.status === 401 ){
 			return {data: null, status: 401};

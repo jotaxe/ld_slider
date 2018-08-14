@@ -1,4 +1,4 @@
-export const domain = "192.168.0.11";//"167.99.202.59:3030";
+export const domain = "167.99.202.59";//"167.99.202.59:3030";
 export const port = "3030";
 
 export function fetchAllWs(domain, port){
