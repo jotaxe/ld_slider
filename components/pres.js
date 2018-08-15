@@ -50,18 +50,18 @@ export default function Pres({slides}){
 
         </div>
         {
-					slide.children.map( (element) =>{
+					slide.children.map( (element, index) =>{
 						switch(element.type){
               case "Text":
-              	return <Heading key={new Date()} textFont = {element.props.style.fontFamily} {...element.props}> {element.children || element.defaultText[0]} </Heading>
+              	return <Heading key={index} textFont = {element.props.style.fontFamily} {...element.props}> {element.children || element.defaultText[0]} </Heading>
               case "Video":
-              	return <iframe key={new Date()} {...element.props}/>
+              	return <iframe key={index} {...element.props}/>
               case "Image":
-              	return <Image key={new Date()} {...element.props} />
+              	return <Image key={index} {...element.props} />
               case "PDF":
-                return <PDFView key={new Date()} {...element.props}/>
+                return <PDFView key={index} {...element.props}/>
               case "WENUWORK":
-                return <ChartView key={new Date()} {...element.props} />
+                return <ChartView key={index} {...element.props} />
             }
           })
         }
@@ -70,8 +70,7 @@ export default function Pres({slides}){
 		) : (<Slide />)
 	} );
 	return (
-        <Deck transition={["slide"]} transitionDuration={1000} controls={false} theme={theme} contentHeight={720} contentWidth={1280}>
-        	
+        <Deck transition={["slide"]} transitionDuration={2000} controls={false} theme={theme} contentHeight={720} contentWidth={1280}>
           {sli}
         </Deck>
     )
