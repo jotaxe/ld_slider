@@ -29,8 +29,8 @@ export default class Home extends Component {
     const {ws, visible} = this.state
     const wsLinks = ws ? ws.map( (workingSite) => {
       return (
-        <Grid.Column>
-          <Card key={workingSite._id}>
+        <Grid.Column key={workingSite._id}>
+          <Card>
             <Card.Content>
               <Card.Header>{workingSite.name}</Card.Header>
               <Card.Meta>Archivos ({workingSite.presentations.length})</Card.Meta>
