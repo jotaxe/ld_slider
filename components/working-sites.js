@@ -31,9 +31,9 @@ export default class WorkingSiteView extends Component {
     const {pres} = this.state
     const presLinks = pres.map( (presentation) => {
       return (
-        <Grid.Column>
+        <Grid.Column key={presentation._id}>
           
-          <Card key={presentation._id}>
+          <Card>
             <Card.Content>
               <Card.Header>{presentation.name}</Card.Header>
               <Card.Meta>Tamaño ({parseInt(JSON.stringify(presentation.presentation_file).length / 1000)} KB)</Card.Meta>
