@@ -52,7 +52,7 @@ export default class Home extends Component {
     return (
       <div>
           <Container text style={{marginTop: '100px'}}>
-            <Header as={"h1"} textAling={"centered"}> Obras </Header>
+            <Header as={"h1"} > Obras </Header>
             <Grid columns={3} > 
               {wsLinks || null}
             </Grid>
