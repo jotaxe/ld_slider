@@ -116,7 +116,7 @@ export function getMeterStats(meter, period, aToken){
 	}
 
 	xhr.send(data);
-	return ret.status == 401 ? ret : {data: JSON.parse(xhr.responseText), status: xhr.status}
+	return ret ? ret : {data: JSON.parse(xhr.responseText), status: xhr.status}
 }
 
 export function getWeeklyStats(sensors, aToken, rToken){
