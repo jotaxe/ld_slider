@@ -36,21 +36,13 @@ export function getAccesToken(){
 	});
 	
 	var xhr = new XMLHttpRequest();
+
 	
-	
-	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", null);
+	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", false);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.setRequestHeader("Cache-Control", "no-cache");
 	
 	xhr.send(data);
-
-	xhr.onreadystatechange = function () {
-		if(xhr.status === 401 ){
-			console.log("desautorizado");
-			return {data: null, status: 401};
-		}
-	}
-
 	const reqJSON = JSON.parse(xhr.responseText);
 	return reqJSON;
 
@@ -66,9 +58,9 @@ export function getRefreshToken(rToken){
 	});
 	
 	var xhr = new XMLHttpRequest();
-	
 
-	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", null);
+
+	xhr.open("POST", "https://api.wenuwork.cl/api/auth/oauth/token", false);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.setRequestHeader("Cache-Control", "no-cache");
 	
@@ -84,7 +76,7 @@ export function getMeters( aToken){
 	xhr.withCredentials = true;
 	
 	
-	xhr.open("GET", "https://api.wenuwork.cl/api/companies/5995a9711bf1469ec8b6612c", true);
+	xhr.open("GET", "https://api.wenuwork.cl/api/companies/5995a9711bf1469ec8b6612c", false);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.setRequestHeader("Authorization", "Bearer " + aToken);
 	xhr.setRequestHeader("Cache-Control", "no-cache");
@@ -138,7 +130,7 @@ export function getWeeklyStats(sensors, aToken, rToken){
 			const refreshReq = getRefreshToken(rToken);
 			localStorage.setItem("access_token", refreshReq.access_token);
 			localStorage.setItem("refresh_token", refreshReq.refresh_token);
-			stats = getMeterStats(sensor, "monthly", refreshreq.access_token);
+			stats = getMeterStats(sensor, "monthly", refreshReq.access_token);
 		}
 
 		if (lastWeekDay > thisWeekDay) {
@@ -198,9 +190,10 @@ export function getMonthlyStats(sensors, aToken, rToken){
 			const refreshReq = getRefreshToken(rToken);
 			localStorage.setItem("access_token", refreshReq.access_token);
 			localStorage.setItem("refresh_token", refreshReq.refresh_token);
-			stats = getMeterStats(sensor, "annual", refreshreq.access_token);
+			stats = getMeterStats(sensor, "annual", refreshReq.access_token);
 		}
-			
+
+						
 		prevEnergy +=  stats.data.prev.readings[monthDay].ep1;
 		prevExpent +=  stats.data.prev.readings[monthDay].expent ;
 		prevCo2 += stats.data.prev.readings[monthDay].co2;
