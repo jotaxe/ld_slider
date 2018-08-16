@@ -46,6 +46,7 @@ export function getAccesToken(){
 
 	xhr.onreadystatechange = function () {
 		if(xhr.status === 401 ){
+			console.log("desautorizado");
 			return {data: null, status: 401};
 		}
 	}
@@ -83,7 +84,7 @@ export function getMeters( aToken){
 	xhr.withCredentials = true;
 	
 	
-	xhr.open("GET", "https://api.wenuwork.cl/api/companies/5995a9711bf1469ec8b6612c", null);
+	xhr.open("GET", "https://api.wenuwork.cl/api/companies/5995a9711bf1469ec8b6612c", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.setRequestHeader("Authorization", "Bearer " + aToken);
 	xhr.setRequestHeader("Cache-Control", "no-cache");
@@ -100,15 +101,17 @@ export function getMeterStats(meter, period, aToken){
 
 	var xhr = new XMLHttpRequest();
 	
+	
+	xhr.open("GET", "https://api.wenuwork.cl/api/meters/"+meter+"/stats?type=" + period, true);
+	xhr.setRequestHeader("Authorization", "Bearer " + aToken);
+	xhr.setRequestHeader("Cache-Control", "no-cache");
+	
 	xhr.onreadystatechange = function () {
 		if(xhr.status === 401 ){
 			return {data: null, status: 401};
 		}
 	}
-	xhr.open("GET", "https://api.wenuwork.cl/api/meters/"+meter+"/stats?type=" + period, null);
-	xhr.setRequestHeader("Authorization", "Bearer " + aToken);
-	xhr.setRequestHeader("Cache-Control", "no-cache");
-	
+
 	xhr.send(data);
 	
 	return {data: JSON.parse(xhr.responseText), status: xhr.status}
