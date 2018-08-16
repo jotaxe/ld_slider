@@ -56,8 +56,8 @@ export default class WorkingSiteView extends Component {
     return (
       <div>
         <Container text style={{marginTop: '100px'}}>
-          <Header as={"h1"} textAling={"centered"}> Presentaciones </Header>
-          <Grid columns={3} textAling={"centered"} verticalAling={"middle"}>
+          <Header as={"h1"}  > Presentaciones </Header>
+          <Grid columns={3} >
             {presLinks || null}
           </Grid>
         </Container>
