@@ -101,20 +101,24 @@ export function getMeterStats(meter, period, aToken){
 
 	var xhr = new XMLHttpRequest();
 	
+	var ret = null;
 	
-	xhr.open("GET", "https://api.wenuwork.cl/api/meters/"+meter+"/stats?type=" + period, true);
+	xhr.open("GET", "https://api.wenuwork.cl/api/meters/"+meter+"/stats?type=" + period, null);
 	xhr.setRequestHeader("Authorization", "Bearer " + aToken);
 	xhr.setRequestHeader("Cache-Control", "no-cache");
 	
 	xhr.onreadystatechange = function () {
-		if(xhr.status === 401 ){
-			return {data: null, status: 401};
-		}else if(xhr.status === 200){
+		if(xhr.readyState == 4){
+			if(xhr.status == 401){
+				return {data: null, status: 401}
+			}
+
 			return {data: JSON.parse(xhr.responseText), status: xhr.status}
 		}
 	}
 
 	xhr.send(data);
+	return ret;
 }
 
 export function getWeeklyStats(sensors, aToken, rToken){
@@ -192,14 +196,13 @@ export function getMonthlyStats(sensors, aToken, rToken){
 	var prevCo2 = 0;
 	sensors.forEach( (sensor) => {
 		let stats = aToken ? getMeterStats(sensor, "annual", aToken) : null;
-		if(stats && stats.status === 401){
+		if(stats.status === 401){
 			const refreshReq = getRefreshToken(rToken);
 			localStorage.setItem("access_token", refreshReq.access_token);
 			localStorage.setItem("refresh_token", refreshReq.refresh_token);
 			stats = getMeterStats(sensor, "annual", refreshreq.access_token);
 		}
-
-						
+			
 		prevEnergy +=  stats.data.prev.readings[monthDay].ep1;
 		prevExpent +=  stats.data.prev.readings[monthDay].expent ;
 		prevCo2 += stats.data.prev.readings[monthDay].co2;
