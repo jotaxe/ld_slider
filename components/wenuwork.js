@@ -192,7 +192,7 @@ export function getMonthlyStats(sensors, aToken, rToken){
 	var prevCo2 = 0;
 	sensors.forEach( (sensor) => {
 		let stats = aToken ? getMeterStats(sensor, "annual", aToken) : null;
-		if(stats.status === 401){
+		if(stats && stats.status === 401){
 			const refreshReq = getRefreshToken(rToken);
 			localStorage.setItem("access_token", refreshReq.access_token);
 			localStorage.setItem("refresh_token", refreshReq.refresh_token);
