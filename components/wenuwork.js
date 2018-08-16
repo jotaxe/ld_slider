@@ -43,6 +43,13 @@ export function getAccesToken(){
 	xhr.setRequestHeader("Cache-Control", "no-cache");
 	
 	xhr.send(data);
+
+	xhr.onreadystatechange = function () {
+		if(xhr.status === 401 ){
+			return {data: null, status: 401};
+		}
+	}
+
 	const reqJSON = JSON.parse(xhr.responseText);
 	return reqJSON;
 
