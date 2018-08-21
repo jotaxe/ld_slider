@@ -17,11 +17,11 @@ var serverHost = "167.99.202.59";
 
 
 
-app.use(require("webpack-dev-middleware")(compiler, {
-  publicPath: config.output.publicPath
-}));
+// app.use(require("webpack-dev-middleware")(compiler, {
+//   publicPath: config.output.publicPath
+// }));
 
-app.use(require("webpack-hot-middleware")(compiler));
+// app.use(require("webpack-hot-middleware")(compiler));
 
 
 app.get("*", function(req, res) {
