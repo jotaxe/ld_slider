@@ -8,7 +8,8 @@ export default class PDFView extends Component {
       numPages: null,
       pageNumber: 1,
       time: this.props.time,
-      play: true
+      play: true,
+      timeouts: []
     };
   }
 	
@@ -21,11 +22,15 @@ export default class PDFView extends Component {
 
   onPageLoadSuccess = ({pageNumber}) => {
 
-    const {numPages, play, time} = this.state;
+    const {numPages, play, time, timeouts} = this.state;
     const timeout = time > 0 ? time : 6;
-    setTimeout( () => {this.setState({pageNumber: ((pageNumber) < numPages) && play  ? pageNumber + 1 : 1 })}, timeout*1000);
+    timeouts.push(setTimeout( () => {this.setState({pageNumber: ((pageNumber) < numPages) && play  ? pageNumber + 1 : 1 })}, timeout*1000));
   }
 
+  componentWillUnmount() {
+    const {timeouts} = this.state;
+    clearTimeout(timeouts[0]);
+  }
 
   render() {
     

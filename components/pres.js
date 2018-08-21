@@ -42,9 +42,22 @@ export default function Pres({slides}){
 		const bgColor = sProps.style ? sProps.style.backgroundColor : "white";
 		const bgImage = sProps.style ? sProps.style.backgroundImage : null;
     const transition = sProps.transition ? sProps.transition : ["slide"];
+    var timer =[];
 		return slide.children ? (
 			
-			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ (indx) => { setTimeout(function() {window.location.href = "#/"+ (indx >= size ? 0 : indx + 1) }, (sProps.time > 0 ? sProps.time*1000 : 5000)); } } >
+			<Slide  key={slide.id} transition={transition} bgColor={bgColor} bgImage={bgImage} onActive={ 
+        (indx) => { 
+          timer.push(
+            setTimeout(
+              function() {
+                clearTimeout(timer);
+                window.location.hash = "/"+ (indx >= size ? 0 : indx + 1);
+              }, (sProps.time > 0 ? sProps.time*1000 : 5000)
+            )
+          ); 
+        } 
+        } 
+      >
 				<div className={"home-wrapper"} style={{height: 30, width: 30}}>
           <a className={"home-button"} href="/">Inicio</a>
 

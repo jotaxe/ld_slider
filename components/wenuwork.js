@@ -44,12 +44,14 @@ export function getAccesToken(){
 	
 	xhr.send(data);
 	const reqJSON = JSON.parse(xhr.responseText);
-	return reqJSON;
+	localStorage.setItem("access_token", reqJSON.access_token);
+	localStorage.setItem("refresh_token", reqJSON.refresh_token);
 
 
 }
 
-export function getRefreshToken(rToken){
+export function getRefreshToken(){
+	const rToken = localStorage.getItem("refresh_token");
 	var data = JSON.stringify({
 	  "grant_type": "refresh_token",
 	  "refresh_token": rToken,
@@ -66,10 +68,12 @@ export function getRefreshToken(rToken){
 	
 	xhr.send(data);
 	const reqJSON = JSON.parse(xhr.responseText);
-	return reqJSON;
+	localStorage.setItem("access_token", reqJSON.access_token);
+	localStorage.setItem("refresh_token", reqJSON.refresh_token);
 }
 
-export function getMeters( aToken){
+export function getMeters(){
+	const aToken = localStorage.getItem("access_token");
 	var data = null;
 
 	var xhr = new XMLHttpRequest();
@@ -88,7 +92,8 @@ export function getMeters( aToken){
 	return {reqJSON, status};
 }
 
-export function getMeterStats(meter, period, aToken){
+export function getMeterStats(meter, period){
+	const aToken = localStorage.getItem("access_token");
 	var data = null;
 
 	var xhr = new XMLHttpRequest();
@@ -104,6 +109,14 @@ export function getMeterStats(meter, period, aToken){
 			if(xhr.status == 401){
 				ret = {data: null, status: 401}
 			}
+			if(xhr.status == 200){
+				localStorage.setItem("last_data_" + meter, xhr.responseText)
+			}
+			if(xhr.status == 429){
+				const lastData = localStorage.getItem("last_data_" + meter)
+				ret = {data: JSON.parse(lastData), status: 429}
+				console.log("Too many request")
+			}
 		}
 	}
 
@@ -111,7 +124,8 @@ export function getMeterStats(meter, period, aToken){
 	return ret ? ret : {data: JSON.parse(xhr.responseText), status: xhr.status}
 }
 
-export function getWeeklyStats(sensors, aToken, rToken){
+export function getWeeklyStats(sensors){
+	const aToken = localStorage.getItem("access_token");
 	var today = new Date();
 	var lastWeek = today - 6.048e+8;
 	lastWeek = new Date(lastWeek);
@@ -125,13 +139,12 @@ export function getWeeklyStats(sensors, aToken, rToken){
 	var prevExpent = 0;
 	var prevCo2 = 0;
 	sensors ? sensors.forEach( (sensor) => {
-		let stats = aToken ? getMeterStats(sensor, "monthly", aToken) : null;
+		let stats = aToken ? getMeterStats(sensor, "monthly") : null;
 		if(stats.status === 401){
-			const refreshReq = getRefreshToken(rToken);
-			localStorage.setItem("access_token", refreshReq.access_token);
-			localStorage.setItem("refresh_token", refreshReq.refresh_token);
-			stats = getMeterStats(sensor, "monthly", refreshReq.access_token);
+			getRefreshToken();
+			stats = getMeterStats(sensor, "monthly");
 		}
+
 
 		if (lastWeekDay > thisWeekDay) {
 						
@@ -174,7 +187,10 @@ export function getWeeklyStats(sensors, aToken, rToken){
 	return sensData;
 }
 
-export function getMonthlyStats(sensors, aToken, rToken){
+export function getMonthlyStats(sensors){
+
+	const aToken = localStorage.getItem("access_token");
+	
 	var today = new Date();
 	var monthDay = today.getMonth() + 1;
 	const dayString = monthMap[monthDay - 1];
@@ -187,10 +203,8 @@ export function getMonthlyStats(sensors, aToken, rToken){
 	sensors.forEach( (sensor) => {
 		let stats = aToken ? getMeterStats(sensor, "annual", aToken) : null;
 		if(stats.status === 401){
-			const refreshReq = getRefreshToken(rToken);
-			localStorage.setItem("access_token", refreshReq.access_token);
-			localStorage.setItem("refresh_token", refreshReq.refresh_token);
-			stats = getMeterStats(sensor, "annual", refreshReq.access_token);
+			getRefreshToken();
+			stats = getMeterStats(sensor, "annual");
 		}
 
 						

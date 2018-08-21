@@ -20,19 +20,16 @@ export default class ChartView extends Component{
 			sensors: this.props.sensor,
 			currentSensorsData: undefined,
 			barColor: this.props.barColor,
-			dataKey: this.props.dataKey,
-			accessToken: undefined,
-			refreshToken: undefined
+			dataKey: this.props.dataKey
 		}
 	}
 
 
 
 	componentWillMount(){
-		const accesReq = getAccesToken();
-		const acTk = accesReq.access_token; 
-		const rfsTk = accesReq.refresh_token;
-		this.setState({accessToken: acTk, refreshToken: rfsTk});
+		const aToken = localStorage.getItem("access_token");
+		aToken ? null : getAccesToken();
+		
 	}
 
 
@@ -42,13 +39,12 @@ export default class ChartView extends Component{
 	}
 
 	componentDidMount(){
-		const {accessToken, comparePeriod, refreshToken} = this.state;
 		let sData;
 		const {period} = this.props;
 		if(period === "mensual"){
-			sData = getMonthlyStats(this.props.sensors, accessToken, refreshToken);
+			sData = getMonthlyStats(this.props.sensors);
 		}else if (period === "semanal"){
-			sData = getWeeklyStats(this.props.sensors, accessToken, refreshToken);
+			sData = getWeeklyStats(this.props.sensors);
 		}
 		this.setState({currentSensorsData: sData});
 	}
@@ -60,8 +56,8 @@ export default class ChartView extends Component{
 				<BarChart width={this.props.style.width || 450} height={this.props.style.width || 400} data={currentSensorsData || defaultData}>
          			<XAxis dataKey='name'/>
          			<YAxis/>
-         			<Bar dataKey={this.state.dataKey} fill={this.state.barColor}>
-						<LabelList dataKey={this.state.dataKey} position="top"/>
+         			<Bar dataKey={dataKey} fill={barColor}>
+						<LabelList dataKey={dataKey} position="top"/>
 					</Bar>
        			</BarChart>
        		</div>

@@ -16,17 +16,13 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    const accessToken = localStorage.getItem("access_token");
-    const refreshToken = localStorage.getItem("refresh_token");
-    const accessReq = {accessToken, refreshToken} ? {accessToken, refreshToken} :  getAccesToken();
-    localStorage.setItem("access_token", accessReq.accessToken)
-    localStorage.setItem("refresh_token", accessReq.refreshToken)
+    getAccesToken();
     const reqJSON = fetchAllWs(domain, port);
     this.setState({ws: reqJSON.data});
   }
 
   render(){
-    const {ws, visible} = this.state
+    const {ws} = this.state
     const wsLinks = ws ? ws.map( (workingSite) => {
       return (
         <Grid.Column key={workingSite._id}>
