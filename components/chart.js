@@ -64,7 +64,7 @@ export default class ChartView extends Component{
 	render(){
 		const {currentSensorsData, barColor, dataKey} = this.state;
 		return (
-			
+			<div style={this.props.style}>
 				<BarChart width={this.props.style.width || 450} height={this.props.style.width || 400} data={currentSensorsData || defaultData}>
          			<XAxis dataKey='name'/>
          			<YAxis/>
@@ -72,7 +72,7 @@ export default class ChartView extends Component{
 						<LabelList dataKey={dataKey} position="center" content={this.contentVal}/>
 					</Bar>
        			</BarChart>
-       		
+       		</div>
 		)
 	}
 }
