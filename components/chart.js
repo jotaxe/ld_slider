@@ -49,18 +49,30 @@ export default class ChartView extends Component{
 		this.setState({currentSensorsData: sData});
 	}
 
+	contentVal = (props) => {
+		const {dataKey} = this.state;
+		switch(dataKey){
+			case "energy":
+				return props.value + " KW";
+			case "co2":
+				return props.value + " Kg";
+			case "expent":
+				return "$ " + props.value
+		}
+	}
+
 	render(){
 		const {currentSensorsData, barColor, dataKey} = this.state;
 		return (
-			<div style={this.props.style}>
+			
 				<BarChart width={this.props.style.width || 450} height={this.props.style.width || 400} data={currentSensorsData || defaultData}>
          			<XAxis dataKey='name'/>
          			<YAxis/>
          			<Bar dataKey={dataKey} fill={barColor}>
-						<LabelList dataKey={dataKey} position="top"/>
+						<LabelList dataKey={dataKey} position="center" content={this.contentVal}/>
 					</Bar>
        			</BarChart>
-       		</div>
+       		
 		)
 	}
 }
