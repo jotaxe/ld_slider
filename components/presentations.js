@@ -22,7 +22,7 @@ import {domain, port, fetchPres} from "./api";
 
 
 
-import Pres from "./pres";
+import Slides from "./slides";
 
 // Require CSS
 require("normalize.css");
@@ -50,6 +50,6 @@ export default class Presentation extends React.Component {
 
   render() {
     const {slides} = this.state
-    return slides.length ? (<Pres slides= {slides}/>): (<span>Loading...</span>)
+    return slides.length ? (<Slides slides= {slides}/>): (<span>Loading...</span>)
   }
 }

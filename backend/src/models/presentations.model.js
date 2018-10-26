@@ -8,7 +8,8 @@ module.exports = function (app) {
   const presentations = new Schema({
     name: { type: String, required: true },
     presentation_file: { type: Schema.Types.Mixed, required: true},
-    belongs_to: {type: Schema.ObjectId, ref: 'workingSites', required: true}
+    belongs_to: {type: Schema.ObjectId, ref: 'workingSites', required: true},
+    version: {type: Number, default: 0}
   }, {
     timestamps: true
   });

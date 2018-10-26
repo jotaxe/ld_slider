@@ -7,6 +7,7 @@ module.exports = {
   devtool: "cheap-module-source-map",
   entry: [
     "babel-polyfill",
+    "whatwg-fetch",
     'webpack-hot-middleware/client',
     "react-hot-loader/patch",
     "./index"
@@ -58,6 +59,10 @@ module.exports = {
                         outputPath: 'fonts/'
                     }
                 }]
+    },{
+      test: /\.(pdf)$/,
+      use: 'file-loader?name=[path][name].[ext]',
+      include: path.join(__dirname, "assets")
     }]
   }
 };

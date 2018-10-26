@@ -1,26 +1,50 @@
 import React, {Component} from 'react';
 import {BarChart, Bar, XAxis, YAxis, LabelList} from "recharts";
-import {getAccesToken, getMonthlyStats, getWeeklyStats} from "./wenuwork";
+import {getAccessToken, getMonthlyStats, getWeeklyStats} from "./wenuwork-fetch";
 
-const defaultData = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-];
+import { ClipLoader } from "halogenium";
+
+// Warn if overriding existing method
+if(Array.prototype.equals)
+    console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+// attach the .equals method to Array's prototype to call it on any array
+Array.prototype.equals = function (array) {
+    // if the other array is a falsy value, return
+    if (!array)
+        return false;
+
+    // compare lengths - can save a lot of time 
+    if (this.length != array.length)
+        return false;
+
+    for (var i = 0, l=this.length; i < l; i++) {
+        // Check if we have nested arrays
+        if (this[i] instanceof Array && array[i] instanceof Array) {
+            // recurse into the nested arrays
+            if (!this[i].equals(array[i]))
+                return false;       
+        }           
+        else if (this[i] != array[i]) { 
+            // Warning - two different object instances will never be equal: {x:20} != {x:20}
+            return false;   
+        }           
+    }       
+    return true;
+}
+// Hide method from for-in loops
+Object.defineProperty(Array.prototype, "equals", {enumerable: false});
+
 
 export default class ChartView extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			comparePeriod: "monthly",
-			sensors: this.props.sensor,
-			currentSensorsData: undefined,
+			comparePeriod: this.props.period,
+			sensors: this.props.sensors,
+			currentSensorsData: this.props.defaultData,
 			barColor: this.props.barColor,
-			dataKey: this.props.dataKey
+			dataKey: this.props.dataKey,
+			loadingChart: true,
 		}
 	}
 
@@ -28,25 +52,45 @@ export default class ChartView extends Component{
 
 	componentWillMount(){
 		const aToken = localStorage.getItem("access_token");
-		aToken ? null : getAccesToken();
+		aToken ? null : getAccessToken();
 		
 	}
 
 
-	shouldComponentUpdate(nextProps){
-		const {currentSensorsData} = this.state;
-		return (this.props.sensors != nextProps.sensors) || (currentSensorsData === undefined);
-	}
-
-	componentDidMount(){
-		let sData;
-		const {period} = this.props;
-		if(period === "mensual"){
-			sData = getMonthlyStats(this.props.sensors);
-		}else if (period === "semanal"){
-			sData = getWeeklyStats(this.props.sensors);
+	componentDidUpdate(prevProps){
+		var { defaultData, barColor, dataKey, period } = this.props;
+		if(defaultData != prevProps.defaultData){
+			this.setState({currentSensorsData: defaultData})
 		}
-		this.setState({currentSensorsData: sData});
+		if(barColor != prevProps.barColor){
+			this.setState({barColor: barColor})
+		}
+		if(dataKey != prevProps.dataKey){
+			this.setState({dataKey: dataKey})
+		}
+		if(period != prevProps.period){
+			this.setState({comparePeriod: period})
+		}
+	}
+	componentDidMount(){
+		const {period} = this.props;
+		
+		if(period === "mensual"){
+			getMonthlyStats(this.props.sensors).then((sData) => {
+				this.setState({
+					currentSensorsData: sData,
+					loadingChart: false,
+				})
+			});
+
+		}else if (period === "semanal"){
+			getWeeklyStats(this.props.sensors).then((sData) => {
+				this.setState({
+					currentSensorsData: sData,
+					loadingChart: false,
+				});
+			});
+		}
 	}
 
 	contentVal = (props) => {
@@ -62,17 +106,17 @@ export default class ChartView extends Component{
 	}
 
 	render(){
-		const {currentSensorsData, barColor, dataKey} = this.state;
-		return (
-			<div style={this.props.style}>
-				<BarChart width={this.props.style.width || 450} height={this.props.style.width || 400} data={currentSensorsData || defaultData}>
+		const {barColor, dataKey, loadingChart } = this.state;
+		return loadingChart ? (<div style={this.props.style}><ClipLoader color={'#4DAF7C'}/></div>) : (
+
+				<BarChart style={this.props.style} width={this.props.style.width || 450} height={this.props.style.width || 400} data={this.state.currentSensorsData}>
          			<XAxis dataKey='name'/>
          			<YAxis/>
          			<Bar dataKey={dataKey} fill={barColor}>
 						<LabelList dataKey={dataKey} position="center" content={this.contentVal}/>
 					</Bar>
        			</BarChart>
-       		</div>
+       		
 		)
 	}
 }

@@ -6,6 +6,7 @@ var webpack = require("webpack");
 module.exports = {
   entry: [
     "babel-polyfill",
+    "whatwg-fetch",
     "./index"
   ],
   output: {
@@ -52,6 +53,11 @@ module.exports = {
                         outputPath: 'fonts/'
                     }
                 }]
+    },
+    {
+      test: /\.(pdf)$/,
+      use: 'file-loader?name=[path][name].[ext]',
+      include: path.join(__dirname, "assets")
     }]
   }
 };

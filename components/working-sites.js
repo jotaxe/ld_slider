@@ -35,7 +35,7 @@ export default class WorkingSiteView extends Component {
           
           <Card>
             <Card.Content>
-              <Card.Header>{presentation.name}</Card.Header>
+              <Card.Header>{presentation.name + (presentation.version > 0 ? (" - " + presentation.version) : "" )}</Card.Header>
               <Card.Meta>Tamaño ({parseInt(JSON.stringify(presentation.presentation_file).length / 1000)} KB)</Card.Meta>
               <Card.Description>Fecha {formatDate(presentation.createdAt)}</Card.Description>
             </Card.Content>

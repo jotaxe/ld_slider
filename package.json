@@ -18,6 +18,7 @@
     "@feathersjs/feathers": "^3.1.7",
     "@feathersjs/socketio-client": "^1.1.0",
     "cors": "^2.8.4",
+    "halogenium": "^2.2.3",
     "normalize.css": "7.0.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -28,7 +29,8 @@
     "semantic-ui-react": "^0.82.0",
     "socket.io-client": "^2.1.1",
     "spectacle": "^4.0.0",
-    "spectacle-renderer": "^0.0.3"
+    "spectacle-renderer": "^0.0.3",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

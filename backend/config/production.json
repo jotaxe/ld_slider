@@ -6,6 +6,6 @@
     "default": 10,
     "max": 50
   },
-  "mongodb": "mongodb://167.99.202.59:27017/ld_slider"
+  "mongodb": "mongodb://api:pr4387@167.99.202.59:27017/ld_slider"
 }
 

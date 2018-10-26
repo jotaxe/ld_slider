@@ -12,16 +12,16 @@ app.use(cors());
 var compiler = webpack(config);
 
 var serverPort = process.env.PORT || 3001;
-var serverHost = "167.99.202.59";
+var serverHost = "192.168.0.11";
 
 
 
 
-// app.use(require("webpack-dev-middleware")(compiler, {
-//   publicPath: config.output.publicPath
-// }));
+app.use(require("webpack-dev-middleware")(compiler, {
+  publicPath: config.output.publicPath
+}));
 
-// app.use(require("webpack-hot-middleware")(compiler));
+app.use(require("webpack-hot-middleware")(compiler));
 
 
 app.get("*", function(req, res) {

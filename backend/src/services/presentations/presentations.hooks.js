@@ -1,13 +1,15 @@
 const addToWorkingSite = require('../../hooks/add-to-working-site');
 
+const versionControl = require('../../hooks/version-control');
+
 module.exports = {
   before: {
     all: [],
     find: [],
     get: [],
-    create: [],
-    update: [],
-    patch: [],
+    create: [versionControl()],
+    update: [versionControl()],
+    patch: [versionControl()],
     remove: []
   },
 
