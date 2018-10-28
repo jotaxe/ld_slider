@@ -12,7 +12,7 @@ app.use(cors());
 var compiler = webpack(config);
 
 var serverPort = process.env.PORT || 3001;
-var serverHost = "192.168.0.11";
+var serverHost = "167.99.202.59";
 
 
 
